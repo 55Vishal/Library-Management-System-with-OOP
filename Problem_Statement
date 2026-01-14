@@ -1,0 +1,220 @@
+# Object-Oriented Programming Basics
+# 📚 Theory Concepts:
+# OOP Fundamentals: Understanding classes, objects, and the four pillars of OOP
+# Classes & Objects: Blueprints vs instances - how to define and use them
+# Attributes & Methods: Data and behavior in classes
+# Constructors: The __init__ method for object initialization
+# Class vs Instance Variables: Understanding scope and usage
+# Inheritance Basics: Creating parent-child class relationships
+# 🛠️ Hands-On Practice:
+# Create a Student class with name, age, and grade attributes
+# Build a BankAccount class with deposit/withdraw methods
+# Create a Book class with title, author, and status properties
+# Make a Car class with properties (make, model, year) and behaviors
+# Practice creating multiple objects from the same class
+# Build simple inheritance examples (Vehicle → Car, Vehicle → Motorcycle)
+# 🎯 Project: Library Management System with OOP
+# Build a comprehensive library management system using Object-Oriented Programming principles. Create Book, Member, and Library classes to manage book borrowing, returns, and tracking. This project will teach you how to design and implement real-world systems using classes and objects.
+
+# 🛠️ Technical Requirements:
+# Create Book class with attributes (title, author, ISBN, availability)
+# Create Member class with attributes (name, member_id, borrowed_books)
+# Create Library class to manage books and members
+# Implement methods for borrowing and returning books
+# Add search functionality for books
+# Implement due date tracking and overdue calculations
+# Add data persistence using file operations
+# Create a user-friendly menu system
+# 📋 Step-by-Step Guide:
+# Step 1: Design Class Structure
+# • Plan the attributes and methods for each class
+# • Define relationships between classes
+# • Create UML diagram or class structure sketch
+# Step 2: Implement Book Class
+# • Create Book class with __init__ method
+# • Add attributes: title, author, isbn, year, available (boolean)
+# • Add __str__ method for readable representation
+# • Add methods: check_out(), return_book()
+# Step 3: Implement Member Class
+# • Create Member class with __init__ method
+# • Add attributes: name, member_id, borrowed_books (list)
+# • Add methods: borrow_book(), return_book()
+# • Add maximum borrow limit (e.g., 5 books)
+# Step 4: Implement Library Class
+# • Create Library class to manage collections
+# • Add attributes: books (dictionary), members (dictionary)
+# • Add methods: add_book(), remove_book(), find_book()
+# • Add methods: register_member(), find_member()
+# Step 5: Implement Core Functionality
+# • Add borrow_book() method in Library class
+# • Add return_book() method with overdue calculation
+# • Implement search by title, author, or ISBN
+# • Add statistics: total books, available books, etc.
+# Step 6: Add File Operations
+# • Save/load books to JSON file
+# • Save/load members to JSON file
+# • Implement backup functionality
+# • Handle file errors gracefully
+# Step 7: Create User Interface
+# • Build a menu system for librarians
+# • Add input validation for all operations
+# • Create formatted displays for books and members
+# • Add search results display
+# 💻 Sample Code:
+# # book.py
+# from datetime import datetime, timedelta
+
+# class Book:
+#     """Represents a book in the library"""
+    
+#     def __init__(self, title, author, isbn, year=None):
+#         self.title = title
+#         self.author = author
+#         self.isbn = isbn
+#         self.year = year
+#         self.available = True
+#         self.borrowed_by = None
+#         self.due_date = None
+#         self.date_added = datetime.now().strftime('%Y-%m-%d')
+    
+#     def check_out(self, member_id, loan_period=14):
+#         """Check out the book to a member"""
+#         if not self.available:
+#             return False, "Book is already checked out"
+        
+#         self.available = False
+#         self.borrowed_by = member_id
+#         self.due_date = (datetime.now() + timedelta(days=loan_period)).strftime('%Y-%m-%d')
+#         return True, f"Book checked out successfully. Due date: {self.due_date}"
+    
+#     def return_book(self):
+#         """Return the book to the library"""
+#         if self.available:
+#             return False, "Book is already available"
+        
+#         was_overdue = self.is_overdue()
+#         self.available = True
+#         self.borrowed_by = None
+#         self.due_date = None
+        
+#         if was_overdue:
+#             return True, "Book returned (was overdue)"
+#         return True, "Book returned successfully"
+    
+#     def is_overdue(self):
+#         """Check if the book is overdue"""
+#         if self.due_date and not self.available:
+#             due_date = datetime.strptime(self.due_date, '%Y-%m-%d')
+#             return datetime.now() > due_date
+#         return False
+    
+#     def days_overdue(self):
+#         """Calculate days overdue"""
+#         if self.is_overdue():
+#             due_date = datetime.strptime(self.due_date, '%Y-%m-%d')
+#             return (datetime.now() - due_date).days
+#         return 0
+    
+#     def to_dict(self):
+#         """Convert book to dictionary for serialization"""
+#         return {
+#             'title': self.title,
+#             'author': self.author,
+#             'isbn': self.isbn,
+#             'year': self.year,
+#             'available': self.available,
+#             'borrowed_by': self.borrowed_by,
+#             'due_date': self.due_date,
+#             'date_added': self.date_added
+#         }
+    
+#     @classmethod
+#     def from_dict(cls, data):
+#         """Create Book instance from dictionary"""
+#         book = cls(
+#             title=data['title'],
+#             author=data['author'],
+#             isbn=data['isbn'],
+#             year=data.get('year')
+#         )
+#         book.available = data['available']
+#         book.borrowed_by = data.get('borrowed_by')
+#         book.due_date = data.get('due_date')
+#         book.date_added = data.get('date_added', datetime.now().strftime('%Y-%m-%d'))
+#         return book
+    
+#     def __str__(self):
+#         status = "Available" if self.available else f"Borrowed by {self.borrowed_by}"
+#         return f"{self.title} by {self.author} ({self.isbn}) - {status}"
+# 📊 Sample Output:
+# ================================
+#     LIBRARY MANAGEMENT SYSTEM
+# ================================
+# Loaded 25 books from file
+# Loaded 10 members from file
+
+# 1. Add New Book
+# 2. Register New Member
+# 3. Borrow Book
+# 4. Return Book
+# 5. Search Books
+# 6. View All Books
+# 7. View All Members
+# 8. View Overdue Books
+# 9. Save & Exit
+# 0. Exit Without Saving
+
+# Enter your choice: 5
+
+# Search books by:
+# 1. Title
+# 2. Author
+# 3. ISBN
+# 4. Show all available books
+
+# Enter search option: 1
+
+# Enter title to search: python
+
+# Search Results for 'python':
+# ----------------------------------------
+# 1. Python Crash Course
+#    Author: Eric Matthes
+#    ISBN: 9781593279288
+#    Year: 2019
+#    Status: Available
+
+# 2. Automate the Boring Stuff with Python
+#    Author: Al Sweigart
+#    ISBN: 9781593275990
+#    Year: 2015
+#    Status: Borrowed by MEM001 (Due: 2024-02-15)
+
+# 3. Fluent Python
+#    Author: Luciano Ramalho
+#    ISBN: 9781491946008
+#    Year: 2022
+#    Status: Available
+
+# Found 3 books matching 'python'
+# 📤 Submission Requirements:
+# GitHub Structure:
+
+# week5-library-system/
+# │── library_system/
+# │ ├── __init__.py
+# │ ├── book.py
+# │ ├── member.py
+# │ ├── library.py
+# │ └── main.py
+# │── data/
+# │ ├── books.json
+# │ ├── members.json
+# │ └── backup/
+# │── tests/
+# │ ├── test_book.py
+# │ ├── test_member.py
+# │ └── test_library.py
+# │── requirements.txt
+# │── README.md
+# └── .gitignore
